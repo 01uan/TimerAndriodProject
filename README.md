@@ -15,4 +15,3 @@ Timer Fragment
 
 Settings Fragment
 
-
