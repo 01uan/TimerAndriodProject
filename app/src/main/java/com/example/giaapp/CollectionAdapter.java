@@ -26,7 +26,7 @@ public class CollectionAdapter extends FragmentStateAdapter {
                 fragment = new Timer();
                 return fragment;
             case 1:
-                fragment = new Tasks();
+                fragment = new TaskTab();
                 return fragment;
             case 2:
                 //return settings

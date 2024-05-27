@@ -14,7 +14,8 @@ import java.util.ArrayList;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private ArrayList<Task> tasks;
     private LayoutInflater mInflator;
-    private ItemClickListener mClickListener;
+    private onItemClickListener mClickListener;
+
 
     public TaskAdapter(Context context, ArrayList<Task> tasks) {
         this.tasks = tasks;
@@ -45,11 +46,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return tasks.get(id);
     }
 
-    public void setClickListener(ItemClickListener itemClickListener) {
+    public void setClickListener(onItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    public interface ItemClickListener {
+    public interface onItemClickListener {
         void onItemClick(View view, int position);
     }
 
@@ -70,5 +71,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
+
     }
 }
