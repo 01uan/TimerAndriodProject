@@ -23,13 +23,13 @@ public class CollectionAdapter extends FragmentStateAdapter {
 
         switch (position) {
             case 0:
-                fragment = new Timer();
+                fragment = new TimerTab();
                 return fragment;
             case 1:
                 fragment = new TaskTab();
                 return fragment;
             case 2:
-                //return settings
+                fragment = new SettingsTab();
         }
         return fragment;
     }

@@ -62,10 +62,12 @@ public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener
     public void refreshData() {
         Cursor cursor = db.getAllTasks();
         tasks.clear();
-        while (cursor.moveToNext()) {
-            Task task = new Task(cursor.getString(1), cursor.getInt(2));
-            task.setId(cursor.getLong(0));
-            tasks.add(task);
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = new Task(cursor.getString(1), cursor.getInt(2));
+                task.setId(cursor.getLong(0));
+                tasks.add(task);
+            } while (cursor.moveToNext());
         }
         adapter.notifyDataSetChanged();
     }
@@ -96,6 +98,7 @@ public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener
         adapter.notifyDataSetChanged();
         etChunks.setText("");
         etTaskName.setText("");
+        btnDelete.setVisibility(View.GONE);
     }
 
     public void handleDelete(View view) {

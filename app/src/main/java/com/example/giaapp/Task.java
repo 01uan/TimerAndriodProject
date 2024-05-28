@@ -5,6 +5,8 @@ public class Task {
     private String name;
     private int chunks;
 
+    private boolean isCompleted;
+
     public Task(String name, int chunks) {
         this.name = name;
         this.chunks = chunks;
@@ -32,5 +34,13 @@ public class Task {
 
     public long getId() {
         return id;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
     }
 }
