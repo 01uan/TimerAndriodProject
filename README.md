@@ -8,7 +8,7 @@ Timer App for tracking tasks with chunks of time. WIP
 
 #### Timer Fragment
 
-- [] connect et to task fragment
+- [x] connect et to task fragment
 - [] timer shall restart to the one specified in the settings, long break and short break.
 - [] implement some way for time to count down from mm:ss to miliseconds
 - [] setup schedules notifications
