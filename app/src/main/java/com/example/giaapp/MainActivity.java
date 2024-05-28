@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         CollectionAdapter collectionAdapter = new CollectionAdapter(getSupportFragmentManager(), getLifecycle());
         viewPager.setAdapter(collectionAdapter);
 
-
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     switch (position) {

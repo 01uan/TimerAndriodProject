@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/entireTask"
         android:layout_width="match_parent"
         android:layout_height="150px"
         android:background="#D3CBCB"

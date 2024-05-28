@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class TaskDBHelper extends SQLiteOpenHelper {
 
     //initialize database name and version
@@ -17,6 +19,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_CHUNKS = "chunks";
+    private static final String COLUMN_COMPLETED = "completed";
 
     private SQLiteDatabase sqlDB;
 
@@ -38,6 +41,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
     /**
      * creates the table in the database
+     *
      * @param sqLiteDatabase
      */
     @Override
@@ -46,8 +50,13 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT, " +
-                COLUMN_CHUNKS + " INTEGER);";
+                COLUMN_CHUNKS + " INTEGER, " +
+                COLUMN_COMPLETED + " BOOLEAN);";
         sqLiteDatabase.execSQL(createTable);
+    }
+
+    public void deleteDatabase(Context context) {
+        context.deleteDatabase(DB_NAME);
     }
 
     @Override
@@ -62,6 +71,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         ContentValues cvs = new ContentValues();
         cvs.put(COLUMN_NAME, task.getName());
         cvs.put(COLUMN_CHUNKS, task.getChunks());
+        cvs.put(COLUMN_COMPLETED, task.isCompleted());
 
         //run the insert and retrieve the generated key
         long autoID = sqlDB.insert(TABLE_NAME, null, cvs);
@@ -73,6 +83,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         ContentValues cvs = new ContentValues();
         cvs.put(COLUMN_NAME, task.getName());
         cvs.put(COLUMN_CHUNKS, task.getChunks());
+        cvs.put(COLUMN_COMPLETED, task.isCompleted());
         return sqlDB.update(TABLE_NAME, cvs, COLUMN_ID + "=" + task.getId(), null) > 0;
     }
 
@@ -81,7 +92,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getAllTasks() {
-        Cursor cursor = sqlDB.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_CHUNKS},
+        Cursor cursor = sqlDB.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_CHUNKS, COLUMN_COMPLETED},
                 null, null, null, null, null);
 
         if (cursor != null) {
@@ -91,8 +102,22 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public ArrayList<Task> getAllTasksList() {
+        Cursor cursor = getAllTasks();
+
+        ArrayList<Task> tasks = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                Task task = new Task(cursor.getString(1), cursor.getInt(2), cursor.getInt(3) != 0);
+                task.setId(cursor.getLong(0));
+                tasks.add(task);
+            } while (cursor.moveToNext());
+        }
+        return tasks;
+    }
+
     public Cursor getTask(long id) {
-        Cursor cursor = sqlDB.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_CHUNKS},
+        Cursor cursor = sqlDB.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_CHUNKS, COLUMN_COMPLETED},
                 COLUMN_ID + "=" + id, null, null, null, null);
 
         if (cursor != null) {

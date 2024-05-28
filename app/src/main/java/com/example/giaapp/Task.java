@@ -5,11 +5,12 @@ public class Task {
     private String name;
     private int chunks;
 
-    private boolean isCompleted;
+    private boolean completed;
 
-    public Task(String name, int chunks) {
+    public Task(String name, int chunks, boolean completed) {
         this.name = name;
         this.chunks = chunks;
+        this.completed = completed;
     }
 
     public int getChunks() {
@@ -37,10 +38,10 @@ public class Task {
     }
 
     public void setCompleted(boolean completed) {
-        isCompleted = completed;
+        this.completed = completed;
     }
 
     public boolean isCompleted() {
-        return isCompleted;
+        return completed;
     }
 }
