@@ -23,7 +23,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvTaskName"
+            android:id="@+id/tvCurrentTask"
             android:layout_width="221dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

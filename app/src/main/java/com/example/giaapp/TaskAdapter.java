@@ -62,7 +62,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ViewHolder(View itemView) {
             super(itemView);
             tvNumber = itemView.findViewById(R.id.tvNumber);
-            tvTaskName = itemView.findViewById(R.id.tvTaskName);
+            tvTaskName = itemView.findViewById(R.id.tvCurrentTask);
             tvChunks = itemView.findViewById(R.id.tvChunks);
             itemView.setOnClickListener(this);
         }

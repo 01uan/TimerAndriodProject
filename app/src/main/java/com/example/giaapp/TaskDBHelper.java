@@ -102,6 +102,10 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public void deleteAllTasks() {
+        sqlDB.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
     public Cursor getAllTasksWithSQL() {
         return sqlDB.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
