@@ -7,8 +7,10 @@ Timer App for tracking tasks with chunks of time. WIP
 
 #### Timer Fragment
 
+- [ ] timer should not be pressable when there is no input or zero. 
 - [ ] timer shall restart to the one specified in the settings, long break and short break.
-- [ ] implement some way for time to count down from mm:ss to miliseconds
+- [x] implement some way for time to count down from mm:ss to miliseconds
+- [ ] on startup, with no tasks, and timer goes down to zero, it crashes
 - [ ] setup schedules notifications
 - [ ] caulcate chunks of time and put that total in tvTotal
 

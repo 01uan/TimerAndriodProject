@@ -72,6 +72,7 @@ public class TimerTab extends Fragment {
 
     public void updateScreen(ArrayList<Task> tasks) {
         completed = 0;
+
         if (tasks.size() > 0) {
             for (Task task : tasks) {
                 if (!task.isCompleted()) {
@@ -84,7 +85,13 @@ public class TimerTab extends Fragment {
                 tvCurrentTask.setText("All Tasks Have Finished");
             }
         }
+
         tvTotal.setText(String.format("Tasks: %d/%d", completed, tasks.size()));
+
+        if (tasks.size() == 0) {
+            tvCurrentTask.setText("No Tasks Available");
+        }
+
     }
 
     /**
@@ -93,12 +100,29 @@ public class TimerTab extends Fragment {
      * @param view
      */
     public void startTimer(View view) {
-        btnStart.setVisibility(View.GONE);
+        long duration = 0;
+
+        String timeInput = etTime.getText().toString();
+        if (timeInput.matches("\\d+:\\d+")) {
+            String[] timeParts = timeInput.split(":");
+            int minutes = Integer.parseInt(timeParts[0]);
+            int seconds = Integer.parseInt(timeParts[1]);
+            duration = (minutes * 60 + seconds) * 1000;
+        } else if (timeInput.matches("\\d+")) {
+            duration = Integer.parseInt(timeInput) * 1000;
+        } else {
+            Toast.makeText(getContext(), "Invalid time input", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         //making countDownTimer object to track time and count down
-        timer = new CountDownTimer(Integer.parseInt(etTime.getText().toString()) * TimeUnit.SECONDS.toMillis(1), 6) {
+        timer = new CountDownTimer(duration, 1000) {
             //onTick method is called every second to update the time
             public void onTick(long millisUntilFinished) {
-                etTime.setText(String.valueOf(millisUntilFinished / TimeUnit.SECONDS.toMillis(1)));
+                long remainingSeconds = millisUntilFinished / 1000;
+                long minutes = remainingSeconds / 60;
+                etTime.setText(String.format("%02d:%02d", minutes, remainingSeconds % 60));
             }
 
             //onFinish method is called when the timer is finished
@@ -107,14 +131,16 @@ public class TimerTab extends Fragment {
                 btnStop.setVisibility(View.GONE);
 
                 //update the task to completed
-
-                currentTask.setCompleted(true);
-                db.updateTask(currentTask);
-                sharedView.setTasks(db.getAllTasksList());
-                updateScreen(db.getAllTasksList());
+                if (currentTask != null) {
+                    currentTask.setCompleted(true);
+                    db.updateTask(currentTask);
+                    sharedView.setTasks(db.getAllTasksList());
+                    updateScreen(db.getAllTasksList());
+                }
             }
 
         }.start();
+        btnStart.setVisibility(View.GONE);
         btnStop.setVisibility(View.VISIBLE);
         btnRestart.setVisibility(View.GONE);
         etTime.setEnabled(false);
