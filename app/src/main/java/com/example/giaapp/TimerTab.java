@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -15,21 +16,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class TimerTab extends Fragment {
 
-    TextView etTime, tvCurrentTask, tvTotal;
-    Button btnStart, btnStop, btnRestart;
-    CountDownTimer timer;
+    private TextView etTime, tvCurrentTask, tvTotal;
+    private Button btnStart, btnStop, btnRestart;
+    private CountDownTimer timer;
+    private TaskDBHelper db;
+    private SharedView sharedView;
+    private Task currentTask;
 
-    TaskDBHelper db;
-
-    int time, shortBreak, longBreak;
+    int time, shortBreak, longBreak, completed;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedView = new ViewModelProvider(requireActivity()).get(SharedView.class);
         return inflater.inflate(R.layout.fragment_timer, container, false);
     }
 
@@ -46,9 +50,9 @@ public class TimerTab extends Fragment {
         db = new TaskDBHelper(getActivity());
         db.open();
 
-        tvTotal.setText(String.valueOf(db.getAllTasks().getCount()));
-        if (db.getAllTasks().getCount() > 0) {
-            tvCurrentTask.setText("Currently Doing " + db.getAllTasks().getString(1));
+        //first loading up
+        if (db.getAllTasks().getCount() >= 0) {
+            updateScreen(db.getAllTasksList());
         }
 
         btnStart.setOnClickListener(this::startTimer);
@@ -56,8 +60,36 @@ public class TimerTab extends Fragment {
         btnStop.setOnClickListener(this::stopTimer);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        sharedView.getTasks().observe(getViewLifecycleOwner(), tasks -> {
+            if (tasks != null) {
+                updateScreen(tasks);
+            }
+        });
+    }
+
+    public void updateScreen(ArrayList<Task> tasks) {
+        completed = 0;
+        if (tasks.size() > 0) {
+            for (Task task : tasks) {
+                if (!task.isCompleted()) {
+                    currentTask = task;
+                    tvCurrentTask.setText("Currently Doing " + task.getName());
+                    break;
+                } else {
+                    completed++;
+                }
+                tvCurrentTask.setText("All Tasks Have Finished");
+            }
+        }
+        tvTotal.setText(String.format("Tasks: %d/%d", completed, tasks.size()));
+    }
+
     /**
      * Starts the timer
+     *
      * @param view
      */
     public void startTimer(View view) {
@@ -66,13 +98,20 @@ public class TimerTab extends Fragment {
         timer = new CountDownTimer(Integer.parseInt(etTime.getText().toString()) * TimeUnit.SECONDS.toMillis(1), 6) {
             //onTick method is called every second to update the time
             public void onTick(long millisUntilFinished) {
-                etTime.setText(String.valueOf(millisUntilFinished/ TimeUnit.SECONDS.toMillis(1)));
+                etTime.setText(String.valueOf(millisUntilFinished / TimeUnit.SECONDS.toMillis(1)));
             }
 
             //onFinish method is called when the timer is finished
             public void onFinish() {
                 restartTimer(view);
                 btnStop.setVisibility(View.GONE);
+
+                //update the task to completed
+
+                currentTask.setCompleted(true);
+                db.updateTask(currentTask);
+                sharedView.setTasks(db.getAllTasksList());
+                updateScreen(db.getAllTasksList());
             }
 
         }.start();
@@ -83,6 +122,7 @@ public class TimerTab extends Fragment {
 
     /**
      * Stops the timer
+     *
      * @param view
      */
     public void stopTimer(View view) {
@@ -94,6 +134,7 @@ public class TimerTab extends Fragment {
 
     /**
      * Restarts the timer
+     *
      * @param view
      */
     public void restartTimer(View view) {
@@ -102,8 +143,6 @@ public class TimerTab extends Fragment {
         btnStart.setVisibility(View.VISIBLE);
         btnRestart.setVisibility(View.GONE);
     }
-
-
 
 
 }

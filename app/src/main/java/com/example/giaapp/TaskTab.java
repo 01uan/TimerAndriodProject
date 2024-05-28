@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener {
 
+    private SharedView sharedView;
     private TaskDBHelper db;
 
     private EditText etChunks, etTaskName;
@@ -33,6 +35,7 @@ public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        sharedView = new ViewModelProvider(requireActivity()).get(SharedView.class);
         return inflater.inflate(R.layout.fragment_tasks, container, false);
     }
 
@@ -59,16 +62,26 @@ public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshData();
+    }
+
+
     public void refreshData() {
         Cursor cursor = db.getAllTasks();
-        tasks.clear();
+        ArrayList<Task> newTasks = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
-                Task task = new Task(cursor.getString(1), cursor.getInt(2));
+                Task task = new Task(cursor.getString(1), cursor.getInt(2), cursor.getInt(3) != 0);
                 task.setId(cursor.getLong(0));
-                tasks.add(task);
+                newTasks.add(task);
             } while (cursor.moveToNext());
         }
+        tasks.clear();
+        tasks.addAll(newTasks);
+        sharedView.setTasks(tasks);
         adapter.notifyDataSetChanged();
     }
 
@@ -83,7 +96,7 @@ public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener
                 return;
             }
 
-            Task task = new Task(name, chunks);
+            Task task = new Task(name, chunks, false);
             tasks.add(task);
             db.createTask(task);
 
