@@ -27,7 +27,7 @@ import java.util.List;
 
 public class SettingsTab extends Fragment {
 
-    private Spinner listBackground, listHourFormat, listAutoBreak;
+    private Spinner listHourFormat, listAutoBreak;
     private EditText etTimerSetting, etShortBreak, etLongBreak;
     private SharedPreferences sharedPreferences;
 
@@ -39,7 +39,6 @@ public class SettingsTab extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        listBackground = view.findViewById(R.id.listBackground);
         listHourFormat = view.findViewById(R.id.listHourFormat);
         listAutoBreak = view.findViewById(R.id.listAutoBreak);
         etTimerSetting = view.findViewById(R.id.etTimerSetting);
@@ -55,7 +54,6 @@ public class SettingsTab extends Fragment {
 
     public void saveSettings() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("Background", listBackground.getSelectedItem().toString());
         editor.putString("HourFormat", listHourFormat.getSelectedItem().toString());
         editor.putString("AutoBreak", listAutoBreak.getSelectedItem().toString());
         editor.putString("TimerSetting", etTimerSetting.getText().toString());
@@ -65,7 +63,6 @@ public class SettingsTab extends Fragment {
     }
 
     public void loadSettings() {
-        listBackground.setSelection(getIndex(listBackground, sharedPreferences.getString("Background", "Default")));
         listHourFormat.setSelection(getIndex(listHourFormat, sharedPreferences.getString("HourFormat", "24 Hours")));
         listAutoBreak.setSelection(getIndex(listAutoBreak, sharedPreferences.getString("AutoBreak", "Enable")));
         etTimerSetting.setText(sharedPreferences.getString("TimerSetting", "25:00"));
@@ -83,12 +80,11 @@ public class SettingsTab extends Fragment {
     }
 
     public void setupSpinners(View view) {
-        listBackground = view.findViewById(R.id.listBackground);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
 
-        List<Spinner> spinnerList = List.of(listBackground, listHourFormat, listAutoBreak);
-        List<Integer> spinnerArray = List.of(R.array.background, R.array.hourFormat, R.array.autoBreak);
+        List<Spinner> spinnerList = List.of(listHourFormat, listAutoBreak);
+        List<Integer> spinnerArray = List.of(R.array.hourFormat, R.array.autoBreak);
         int count = 0;
 
         for (Spinner spinner : spinnerList) {
