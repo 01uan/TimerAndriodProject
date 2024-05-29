@@ -33,7 +33,7 @@
                 android:text="Background" />
 
             <Spinner
-                android:id="@+id/bgSpinner"
+                android:id="@+id/listBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -50,7 +50,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvTimer"
+                android:id="@+id/tvTimerSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="50px"
@@ -58,7 +58,7 @@
                 android:text="Timer" />
 
             <EditText
-                android:id="@+id/tvTimerSetting"
+                android:id="@+id/etTimerSetting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -116,7 +116,7 @@
                 android:text="Long Break" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/etLongBreak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -145,7 +145,7 @@
                 android:text="Hour Format" />
 
             <Spinner
-                android:id="@+id/hrSpinner"
+                android:id="@+id/listHourFormat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -169,7 +169,7 @@
                 android:text="Auto Break" />
 
             <Spinner
-                android:id="@+id/AutoBreakSpinner"
+                android:id="@+id/listAutoBreak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
