@@ -17,7 +17,7 @@ To install and run the Timer App on your Android device:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/timer-app.git
+    git clone https://github.com/01uan/TimerAndroidProject
     ```
 
 2. Open the project in Android Studio.
