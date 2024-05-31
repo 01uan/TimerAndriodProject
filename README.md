@@ -46,9 +46,9 @@ To install and run the Timer App on your Android device:
 
 
 ## Screenshots
-![timerTab](/ss/imageTab.png?raw=true "Timer Tab")
+![timerTab](/ss/timerTab.png?raw=true "Timer Tab")
 ![taskTab](/ss/taskTab.png?raw=true "Task Tab")
-![settingTab](/ss/settingTab.png?raw=true "Setting Tab")
+![settingTab](/ss/settingsTab.png?raw=true "Setting Tab")
 
 Include screenshots of the app to give users a visual idea of what to expect.
 
