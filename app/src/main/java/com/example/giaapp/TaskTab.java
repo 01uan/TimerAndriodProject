@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class TaskTab extends Fragment implements TaskAdapter.onItemClickListener {
+public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener {
 
     private SharedView sharedView;
     private TaskDBHelper db;
