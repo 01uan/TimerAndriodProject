@@ -37,7 +37,7 @@ public class TimerTab extends Fragment {
     private Task currentTask;
     private SharedPreferences sharedPreferences;
 
-    int completed;
+    int completed, completedChunks;
 
     @Nullable
     @Override
@@ -97,19 +97,23 @@ public class TimerTab extends Fragment {
             for (Task task : tasks) {
                 if (!task.isCompleted()) {
                     currentTask = task;
-                    tvCurrentTask.setText("Currently Doing " + task.getName());
+                    tvCurrentTask.setText("Currently Doing " + task.getName() + " with Chunks: " + completedChunks +"/" + task.getChunks());
                     break;
                 } else {
                     completed++;
                 }
                 tvCurrentTask.setText("All Tasks Have Finished");
             }
+            if (completed == tasks.size()) {
+                tvTotal.setText("You have no Tasks at all");
+            } else {
+                tvTotal.setText(String.format("Tasks: %d/%d \nFinish In %s", completed, tasks.size(), calulateChunks()));
+            }
         }
-
-        tvTotal.setText(String.format("Tasks: %d/%d \nFinish In %s", completed, tasks.size(), calulateChunks()));
 
         if (tasks.size() == 0) {
             tvCurrentTask.setText("No Tasks Available");
+            tvTotal.setText("You have no Tasks at all");
         }
 
     }
@@ -152,10 +156,15 @@ public class TimerTab extends Fragment {
                 makeNotification(getContext());
                 //update the task to completed
                 if (currentTask != null) {
-                    currentTask.setCompleted(true);
-                    db.updateTask(currentTask);
-                    sharedView.setTasks(db.getAllTasksList());
-                    updateScreen(db.getAllTasksList());
+                    completedChunks++;
+                    if (completedChunks == currentTask.getChunks()) {
+                        currentTask.setCompleted(true);
+                        db.updateTask(currentTask);
+                        sharedView.setTasks(db.getAllTasksList());
+                        updateScreen(db.getAllTasksList());
+                        completedChunks = 0;
+                    }
+
                 }
 
             }
@@ -220,7 +229,6 @@ public class TimerTab extends Fragment {
         }
         btnStart.setVisibility(View.VISIBLE);
         btnRestart.setVisibility(View.GONE);
-
     }
 
     public void clickShortBreak(View view) {
