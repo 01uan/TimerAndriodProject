@@ -50,6 +50,5 @@ To install and run the Timer App on your Android device:
 ![taskTab](/ss/taskTab.png?raw=true "Task Tab")
 ![settingTab](/ss/settingsTab.png?raw=true "Setting Tab")
 
-Include screenshots of the app to give users a visual idea of what to expect.
 
 
