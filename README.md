@@ -1,57 +1,55 @@
 # Timer App Project
 
-## Setup Instructions
+## Introduction
+The Timer App Project is an Android application designed to help users manage their time efficiently. Users can set timers for tasks, receive notifications when the timer is done, and be directed to break timers. The app also includes task management features and customizable settings.
 
-This app will require notification permission. If you have the `.apk` file, you can just run the app on your Android device. Otherwise:
+## Features
+- **Timer Functionality:** Set timers for tasks and breaks, receive notifications upon completion.
+- **Task Management:** Keep track of tasks, their descriptions, and completion status.
+- **Settings Customization:** Modify timer and break durations, backgrounds, and time formats.
+- **Persistent Storage:** Uses SQLite for storing tasks and SharedPreferences for user settings.
+- **Tabbed Navigation:** Easy navigation between Timer, Task, and Settings tabs.
+- **Dynamic Graphics:** Real-time countdown display.
+- **Input Validation:** Ensures valid task entries and time formats.
 
-1. Make the project.
-2. Start up your emulator on Android Studio.
-3. Click the green "play" button.
+## Installation
+To install and run the Timer App on your Android device:
 
-## Purpose of the Application
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/timer-app.git
+    ```
 
-The purpose of the timer application is to help users manage their time efficiently in relation to their tasks. Users can set timers in sessions, receive notifications when the timer is done, and be directed to a break timer. Additionally, the app includes a task management feature to keep track of tasks that need to be completed and how many iterations of timer/break it will take. There is also a settings page to modify timer breaks, backgrounds, and time format.
+2. Open the project in Android Studio.
 
-## New Technologies
+3. Build the project and start the emulator or connect an Android device.
 
-- This app uses SQLite to store tasks with attributes such as task name, description, and completion status.
-- Schedules notifications to alert users when the timer or break ends.
-- Shared Preferences are used to save user settings like the length of time/break and auto break.
-- Tabbed layout to navigate between Timer, Tasks, and Settings fragments.
-- Dynamic Graphics to show the countdown.
-- Input validation to prevent empty task entries and non-numeric characters in the timer.
+4. Run the application by clicking the green "play" button in Android Studio.
 
-## How to Use
-
-Overall, you can either swipe or click on the tabs to navigate throughout the app.
-
+## Usage
 ### Timer Tab
-
-This is the main component of the app. This will list your current task and the total amount of "chunks" it is and how many you have left to do.
-
-- You can start/resume, stop, and restart the timer.
-- Only when the timer is stopped can you change the timer by editing the TextEdit.
-- Only when the timer finishes does it put you back to one of the breaks specified in the settings.
-- Only when the break ends does it put you back to the timer.
+- **Start/Resume:** Start or resume the timer.
+- **Stop:** Stop the timer.
+- **Restart:** Restart the timer.
+- **Breaks:** Automatically switch to breaks after the timer finishes based on settings.
 
 ### Task Tab
-
-This is the task tab where it will list all of your tasks and the chunks associated with it. It will also show what is completed.
-
-- You can input into the fields below and press add. This will put it into the SQLite database.
-- You can click the tasks, and it will show you the choice between updating and deleting the task.
+- **Add Task:** Enter task details and add them to the list.
+- **Update Task:** Modify existing task details.
+- **Delete Task:** Remove tasks from the list.
+- **Completion Status:** View task completion status.
 
 ### Settings Tab
+- **Timer Settings:** Set default timer, short break, and long break durations.
+- **Auto Break:** Configure automatic transition to breaks.
+- **Time Format:** Choose between different time formats.
 
-This is the settings tab where it will list all your settings.
 
-- You can change the default timer, short break, and long break times.
-- Once the timer has been stopped and restarted, this is where it will default the times to.
-- Auto Break is when the main timer finishes; it will either go to the long break, short break, or off, which is just back to the timer.
+## Screenshots
+![timerTab](/ss/imageTab.png?raw=true "Timer Tab")
+![taskTab](/ss/taskTab.png?raw=true "Task Tab")
+![settingTab](/ss/settingTab.png?raw=true "Setting Tab")
 
-## Functionality
+Include screenshots of the app to give users a visual idea of what to expect.
 
-- If you go back to the timer tab, you can find your current task there. The current task is the first task in the list.
-- Upon finishing the timer, it will send a notification indicating that you have finished your timer. It will also update the timer fragment with the updated number of chunks left.
-- Upon completing the task and fulfilling the chunks, the screen will update, indicating that you have finished all your tasks.
-- If you swipe back to the task tab, the task will indicate that it is completed by turning green.
+
