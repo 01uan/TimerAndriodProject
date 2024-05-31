@@ -13,25 +13,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * TaskTab class that handles the task management functionality within the application.
+ * It provides methods for adding, updating, and deleting tasks, as well as displaying the list of tasks.
+ */
 public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener {
 
     private SharedView sharedView;
     private TaskDBHelper db;
-
     private EditText etChunks, etTaskName;
     private ArrayList<Task> tasks = new ArrayList<>();
     private TaskAdapter adapter;
     private Button btnForm, btnDelete;
     private int currentTask;
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment.
+     * @param container If non-null, this is the parent view that the fragment's UI should be attached to. The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     * @return Return the View for the fragment's UI, or null.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +47,11 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
         return inflater.inflate(R.layout.fragment_tasks, container, false);
     }
 
+    /**
+     * Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned, but before any saved state has been restored in to the view.
+     * @param view The View returned by onCreateView(LayoutInflater, ViewGroup, Bundle).
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         etChunks = view.findViewById(R.id.etChunks);
@@ -59,16 +72,20 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
 
         btnForm.setOnClickListener(this::handleBtn);
         btnDelete.setOnClickListener(this::handleDelete);
-
     }
 
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     */
     @Override
     public void onResume() {
         super.onResume();
         refreshData();
     }
 
-
+    /**
+     * Refreshes the task data and updates the UI.
+     */
     public void refreshData() {
         Cursor cursor = db.getAllTasks();
         ArrayList<Task> newTasks = new ArrayList<>();
@@ -85,12 +102,16 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Handles the button click for adding or updating a task.
+     * @param view The view that was clicked.
+     */
     public void handleBtn(View view) {
         String name = etTaskName.getText().toString();
         int chunks = etChunks.getText().toString().isEmpty() ? -1 : Integer.parseInt(etChunks.getText().toString());
 
         if (btnForm.getText().toString().equals("Add")) {
-            //error check for input
+            // Error check for input
             if (chunks == -1 || name.isEmpty()) {
                 Toast.makeText(getContext(), "Invalid input", Toast.LENGTH_SHORT).show();
                 return;
@@ -114,6 +135,10 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
         btnDelete.setVisibility(View.GONE);
     }
 
+    /**
+     * Handles the button click for deleting a task.
+     * @param view The view that was clicked.
+     */
     public void handleDelete(View view) {
         Task task = tasks.get(currentTask);
         db.deleteTask(task);
@@ -125,6 +150,11 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
         btnDelete.setVisibility(View.GONE);
     }
 
+    /**
+     * Called when a task item is clicked.
+     * @param view The view that was clicked.
+     * @param position The position of the clicked item.
+     */
     @Override
     public void onItemClick(View view, int position) {
         currentTask = position;
@@ -133,5 +163,4 @@ public class TaskTab extends Fragment implements TaskAdapter.OnItemClickListener
         btnForm.setText("Update");
         btnDelete.setVisibility(View.VISIBLE);
     }
-
 }

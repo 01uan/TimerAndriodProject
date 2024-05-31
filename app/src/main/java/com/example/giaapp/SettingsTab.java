@@ -57,7 +57,7 @@ public class SettingsTab extends Fragment {
         etLongBreak = view.findViewById(R.id.etLongBreak);
 
         // Setup the spinners and edit texts
-        setupSpinners(view);
+        setupSpinners();
         setupEditTexts();
 
         // Initialize SharedPreferences
@@ -105,9 +105,8 @@ public class SettingsTab extends Fragment {
 
     /**
      * Setup the spinners with adapters and item selected listeners.
-     * @param view The root view of the fragment.
      */
-    public void setupSpinners(View view) {
+    public void setupSpinners() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         List<Spinner> spinnerList = List.of(listAutoBreak);
         List<Integer> spinnerArray = List.of(R.array.autoBreak);
